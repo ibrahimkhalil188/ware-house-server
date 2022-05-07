@@ -18,10 +18,16 @@ async function run() {
     try {
         await client.connect()
         const mobileCollection = client.db("MobileLand").collection("Mobile");
-        console.log("db connected")
+
+        app.get("/home", async (req, res) => {
+            const query = {}
+            const cursor = mobileCollection.find(query)
+            const result = await cursor.toArray()
+            res.send(result)
+        })
     }
     finally {
-        await client.close()
+        //await client.close()
     }
 }
 run().catch(console.dir)
