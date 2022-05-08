@@ -22,7 +22,13 @@ async function run() {
         app.get("/products", async (req, res) => {
             const query = {}
             const cursor = mobileCollection.find(query)
-            const result = await cursor.limit(6).toArray()
+            const result = await cursor.limit(2).toArray()
+            res.send(result)
+        })
+        app.get("/allproducts", async (req, res) => {
+            const query = {}
+            const cursor = mobileCollection.find(query)
+            const result = await cursor.toArray()
             res.send(result)
         })
 
