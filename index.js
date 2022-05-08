@@ -1,6 +1,6 @@
 const express = require("express")
 const app = express()
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 5000
 const cors = require("cors")
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
@@ -41,10 +41,26 @@ async function run() {
             res.send(result)
         })
 
-        app.delete("/allproducts", async (req, res) => {
+        app.delete("/allproducts/:id", async (req, res) => {
             const id = req.params.id
             const query = { _id: ObjectId(id) }
+            console.log(query)
             const result = await mobileCollection.deleteOne(query)
+            console.log(result)
+            res.send(result)
+        })
+
+        app.put("/allproducts/:id", async (req, res) => {
+            const id = req.params.id
+            const data = req.body
+            const query = { _id: ObjectId(id) }
+            const options = { upsert: true }
+            const updateDoc = {
+                $set: {
+                    quantity: data.quantity
+                },
+            }
+            const result = await mobileCollection.updateOne(query, updateDoc, options)
             res.send(result)
         })
 
