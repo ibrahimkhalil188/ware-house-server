@@ -25,12 +25,6 @@ async function run() {
             const result = await cursor.limit(2).toArray()
             res.send(result)
         })
-        app.get("/allproducts", async (req, res) => {
-            const query = {}
-            const cursor = mobileCollection.find(query)
-            const result = await cursor.toArray()
-            res.send(result)
-        })
 
         app.get("/products/:id", async (req, res) => {
             const id = req.params.id
@@ -39,6 +33,21 @@ async function run() {
             const result = await cursor.toArray()
             res.send(result)
         })
+
+        app.get("/allproducts", async (req, res) => {
+            const query = {}
+            const cursor = mobileCollection.find(query)
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
+        app.delete("/allproducts", async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
+            const result = await mobileCollection.deleteOne(query)
+            res.send(result)
+        })
+
 
     }
     finally {
