@@ -2,7 +2,7 @@ const express = require("express")
 const app = express()
 const port = process.env.PORT || 5000
 const cors = require("cors")
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 
 require('dotenv').config()
@@ -19,12 +19,23 @@ async function run() {
         await client.connect()
         const mobileCollection = client.db("MobileLand").collection("Mobile");
 
-        app.get("/home", async (req, res) => {
+        app.get("/products", async (req, res) => {
             const query = {}
+            const cursor = mobileCollection.find(query)
+            const result = await cursor.limit(6).toArray()
+            res.send(result)
+        })
+
+        app.get("/products/:id", async (req, res) => {
+            const id = req.params.id
+            const query = { _id: ObjectId(id) }
             const cursor = mobileCollection.find(query)
             const result = await cursor.toArray()
             res.send(result)
+
+
         })
+
     }
     finally {
         //await client.close()
