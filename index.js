@@ -21,9 +21,10 @@ async function run() {
 
 
         app.get("/allproducts", async (req, res) => {
-            const query = {}
+            const query = req.query.brand
             const limit = parseInt(req.query.limit)
             const cursor = mobileCollection.find(query)
+            console.log(query)
             if (!limit) {
                 const result = await cursor.toArray()
                 res.send(result)
