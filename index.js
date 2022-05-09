@@ -41,6 +41,12 @@ async function run() {
             res.send(result)
         })
 
+        app.post("/allproducts", async (req, res) => {
+            const data = req.body
+            const result = await mobileCollection.insertOne(data)
+            res.send(result)
+        })
+
         app.delete("/allproducts/:id", async (req, res) => {
             const id = req.params.id
             const query = { _id: ObjectId(id) }
