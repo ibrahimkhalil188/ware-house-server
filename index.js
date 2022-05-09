@@ -19,23 +19,24 @@ async function run() {
         await client.connect()
         const mobileCollection = client.db("MobileLand").collection("Mobile");
 
-        /*   app.get("/products", async (req, res) => {
-              const query = {}
-              const cursor = mobileCollection.find(query)
-              const result = await cursor.limit(2).toArray()
-              res.send(result)
-          }) */
+
+        app.get("/allproducts", async (req, res) => {
+            const query = {}
+            const limit = parseInt(req.query.limit)
+            const cursor = mobileCollection.find(query)
+            if (!limit) {
+                const result = await cursor.toArray()
+                res.send(result)
+            } else {
+                const result = await cursor.limit(limit).toArray()
+                res.send(result)
+            }
+
+        })
 
         app.get("/allproducts/:id", async (req, res) => {
             const id = req.params.id
             const query = { _id: ObjectId(id) }
-            const cursor = mobileCollection.find(query)
-            const result = await cursor.toArray()
-            res.send(result)
-        })
-
-        app.get("/allproducts", async (req, res) => {
-            const query = {}
             const cursor = mobileCollection.find(query)
             const result = await cursor.toArray()
             res.send(result)
