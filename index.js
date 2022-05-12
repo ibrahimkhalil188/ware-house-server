@@ -29,7 +29,6 @@ async function run() {
                 query = {}
             }
             const limit = parseInt(req.query.limit)
-            console.log(query)
             const cursor = mobileCollection.find(query)
             if (!limit) {
                 const result = await cursor.toArray()
