@@ -21,10 +21,16 @@ async function run() {
 
 
         app.get("/allproducts", async (req, res) => {
-            const query = {}
+            const email = req.query.email
+            let query;
+            if (email) {
+                query = { email }
+            } else {
+                query = {}
+            }
             const limit = parseInt(req.query.limit)
-            const cursor = mobileCollection.find(query)
             console.log(query)
+            const cursor = mobileCollection.find(query)
             if (!limit) {
                 const result = await cursor.toArray()
                 res.send(result)
@@ -59,7 +65,6 @@ async function run() {
         app.put("/allproducts/:id", async (req, res) => {
             const id = req.params.id
             const data = req.body
-            console.log(data)
             const query = { _id: ObjectId(id) }
             const options = { upsert: true }
             const updateDoc = {
